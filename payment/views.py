@@ -27,6 +27,7 @@ def payment_callback(request):
             }
         #push noti to specific device
         push_callback_noti(noti_data)
+        Response(response_data)
     except Exception as e:
         return Response({'error': 'An error occurred', 'details': str(e)}, status=500)
         
