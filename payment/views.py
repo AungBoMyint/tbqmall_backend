@@ -20,7 +20,7 @@ def payment_callback(request):
         response_token = response_data['payload']
         secret_key = 'C170FEDA038E2AF9F801333CF3932462F420F7D996F3601F719A7C1905F8460C'
         try:
-            decoded_jwt = jwt.decode(response_token, secret_key, algorithms=["HS256"])
+            decoded_jwt = jwt.decode(jwt=response_token, key=secret_key, algorithms=["HS256"])
            
         except (InvalidTokenError, ExpiredSignatureError, DecodeError) as e:
             push_callback_error({'error': 'Invalid or expired token', 'details': str(e)})
