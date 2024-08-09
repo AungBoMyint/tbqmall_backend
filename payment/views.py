@@ -22,7 +22,7 @@ def payment_callback(request):
         noti_data = {
                 "user_ids": ['69308f36-1fbb-4e5f-8369-f1b20e3dae91'],  # replace with actual user_ids
                 "publish_body": {
-                    "fcm": {"notification": {"title": "backend callback", "body": response_data}}
+                    "fcm": {"notification": {"title": "backend callback", "body": f'{response_data}'}}
                 }
             }
         #push noti to specific device
