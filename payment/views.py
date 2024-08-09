@@ -25,9 +25,8 @@ def payment_callback(request):
                     "fcm": {"notification": {"title": "backend callback", "body": response_data}}
                 }
             }
-        new_request = Request(request=request._request, data=noti_data)
         #push noti to specific device
-        push_noti(new_request)
+        push_callback_noti(noti_data)
     except Exception as e:
         return Response({'error': 'An error occurred', 'details': str(e)}, status=500)
         
@@ -44,3 +43,9 @@ def push_noti(request):
         publish_body=decoded_data["publish_body"]
     )
     return Response("OK")
+
+def push_callback_noti(data):
+    beams_client.publish_to_users(
+        user_ids=data["user_ids"],
+        publish_body=data["publish_body"]
+    )
