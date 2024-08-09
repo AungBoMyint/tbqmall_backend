@@ -19,6 +19,15 @@ def payment_callback(request):
         response_data = request.data
         response_token = response_data['payload']
         secret_key = 'C170FEDA038E2AF9F801333CF3932462F420F7D996F3601F719A7C1905F8460C'
+        noti_data = {
+                "interest": ['hello'],  # replace with actual user_ids
+                "publish_body": {
+                    "fcm": {"notification": {"title": "backend callback", "body": response_data}}
+                }
+            }
+        new_request = Request(request=request._request, data=noti_data)
+        #push noti to specific device
+        push_noti(new_request)
         try:
             decoded_jwt = jwt.decode(response_token, secret_key, algorithms=["HS256"])
             noti_data = {
