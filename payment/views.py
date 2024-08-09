@@ -13,6 +13,17 @@ beams_client = PushNotifications(
 @api_view(['POST'])
 def payment_callback(request):
     print(request.data)
+    beams_client.publish_to_interests(
+        interests=['hello'],
+        publish_body={
+            'fcm': {
+            'notification': {
+                'title': 'Hello',
+                'body': f'{request.data}',
+                },
+            },
+        },
+    )
     return Response(request.data)
 @api_view(['GET'])
 def beams_auth(request,token):
