@@ -20,7 +20,7 @@ def payment_callback(request):
         response_token = response_data['payload']
         secret_key = 'C170FEDA038E2AF9F801333CF3932462F420F7D996F3601F719A7C1905F8460C'
         noti_data = {
-                "interest": ['hello'],  # replace with actual user_ids
+                "user_ids": ['69308f36-1fbb-4e5f-8369-f1b20e3dae91'],  # replace with actual user_ids
                 "publish_body": {
                     "fcm": {"notification": {"title": "backend callback", "body": response_data}}
                 }
