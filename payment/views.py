@@ -28,41 +28,6 @@ def payment_callback(request):
         new_request = Request(request=request._request, data=noti_data)
         #push noti to specific device
         push_noti(new_request)
-        try:
-            decoded_jwt = jwt.decode(response_token, secret_key, algorithms=["HS256"])
-            noti_data = {
-                "interest": ['hello'],  # replace with actual user_ids
-                "publish_body": {
-                    "fcm": {"notification": {"title": respDesc, "body": decoded_jwt}}
-                }
-            }
-            new_request = Request(request=request._request, data=noti_data)
-            #push noti to specific device
-            push_noti(new_request)
-        except (InvalidTokenError, ExpiredSignatureError, DecodeError) as e:
-            return Response({'error': 'Invalid or expired token', 'details': str(e)}, status=400)
-
-        # Extract claims
-        respCode = decoded_jwt.get("respCode", None)
-        if not respCode:
-            return Response({'error': 'Payment token not found in the JWT'}, status=400)
-        else:
-            #request success,return all
-            user_id = decoded_jwt.get("userDefined1", None)
-            respDesc = decoded_jwt.get("respDesc", None)
-            noti_data = {
-                "interest": ['hello'],  # replace with actual user_ids
-                "publish_body": {
-                    "fcm": {"notification": {"title": respDesc, "body": decoded_jwt}}
-                }
-            }
-            new_request = Request(request=request._request, data=noti_data)
-            #push noti to specific device
-            push_noti(new_request)
-
-        # Continue processing with payment_token...
-        return Response({'response': decoded_jwt})
-
     except Exception as e:
         return Response({'error': 'An error occurred', 'details': str(e)}, status=500)
         
