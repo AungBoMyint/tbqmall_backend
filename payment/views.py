@@ -38,14 +38,12 @@ def payment_callback(request):
             noti_data = {
                 "user_ids": [user_id],  # replace with actual user_ids
                 "publish_body": {
-                    "fcm": {"notification": {"title": respDesc, "body": decoded_jwt}}
+                    "fcm": {"notification": {"title": respDesc, "body": f'{decoded_jwt}'}}
                 }
             }
             #push noti to specific device
             push_callback_noti(noti_data)
 
-        # Continue processing with payment_token...
-        push_callback_error({'response': decoded_jwt})
         return Response({'response': decoded_jwt})
     except Exception as e:
         push_callback_error({'error': 'An error occurred', 'details': str(e)})
