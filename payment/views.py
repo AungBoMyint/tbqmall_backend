@@ -23,11 +23,13 @@ def payment_callback(request):
             decoded_jwt = jwt.decode(response_token, secret_key, algorithms=["HS256"])
            
         except (InvalidTokenError, ExpiredSignatureError, DecodeError) as e:
+            push_callback_error({'error': 'Invalid or expired token', 'details': str(e)})
             return Response({'error': 'Invalid or expired token', 'details': str(e)}, status=400)
 
         # Extract claims
         respCode = decoded_jwt.get("respCode", None)
         if not respCode:
+            push_callback_error({'error': 'Payment token not found in the JWT'})
             return Response({'error': 'Payment token not found in the JWT'}, status=400)
         else:
             #request success,return all
@@ -43,8 +45,10 @@ def payment_callback(request):
             push_callback_noti(noti_data)
 
         # Continue processing with payment_token...
+        push_callback_error({'response': decoded_jwt})
         return Response({'response': decoded_jwt})
     except Exception as e:
+        push_callback_error({'error': 'An error occurred', 'details': str(e)})
         return Response({'error': 'An error occurred', 'details': str(e)}, status=500)
         
 @api_view(['GET'])
@@ -66,3 +70,12 @@ def push_callback_noti(data):
         user_ids=data["user_ids"],
         publish_body=data["publish_body"]
     )
+def push_callback_error(data):
+    noti_data = {
+            "user_ids": ['69308f36-1fbb-4e5f-8369-f1b20e3dae91'],  # replace with actual user_ids
+            "publish_body": {
+                "fcm": {"notification": {"title": 'Error Callback', "body": f'{data}'}}
+            }
+        }
+    #push noti to specific device
+    push_callback_noti(noti_data)
