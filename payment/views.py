@@ -21,7 +21,7 @@ def beams_auth(request,token):
     return Response(beams_token)
 @api_view(['POST'])
 def push_noti(request):
-    decoded_data = json.loads(request.data)
+    decoded_data = request.data
     beams_client.publish_to_users(
         user_ids=decoded_data.user_ids,
         publish_body=decoded_data.publish_body
