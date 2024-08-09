@@ -18,7 +18,7 @@ def payment_callback(request):
 def beams_auth(request,token):
     device_token = token
     beams_token = beams_client.generate_token(device_token)
-    return Response(json.dumps(beams_token))
+    return Response(beams_token)
 @api_view(['POST'])
 def push_noti(request):
     decoded_data = json.loads(request.data)
