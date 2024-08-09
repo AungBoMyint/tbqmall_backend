@@ -16,7 +16,7 @@ beams_client = PushNotifications(
 @api_view(['POST'])
 def payment_callback(request):
     try:
-        response_data = json.loads(request.data)
+        response_data = request.data
         response_token = response_data['payload']
         secret_key = 'C170FEDA038E2AF9F801333CF3932462F420F7D996F3601F719A7C1905F8460C'
         try:
