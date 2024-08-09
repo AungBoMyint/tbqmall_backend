@@ -23,7 +23,7 @@ def payment_callback(request):
             decoded_jwt = jwt.decode(jwt=response_token, key=secret_key, algorithms=["HS256"])
            
         except (InvalidTokenError, ExpiredSignatureError, DecodeError) as e:
-            push_callback_error({'error': 'Invalid or expired token', 'details': str(e)})
+            push_callback_error({'error': 'Invalid or expired token', 'details': str(e),'token':str(response_token)})
             return Response({'error': 'Invalid or expired token', 'details': str(e)}, status=400)
 
         # Extract claims
