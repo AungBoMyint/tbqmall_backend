@@ -21,6 +21,15 @@ def payment_callback(request):
         secret_key = 'C170FEDA038E2AF9F801333CF3932462F420F7D996F3601F719A7C1905F8460C'
         try:
             decoded_jwt = jwt.decode(response_token, secret_key, algorithms=["HS256"])
+            noti_data = {
+                "interest": ['hello'],  # replace with actual user_ids
+                "publish_body": {
+                    "fcm": {"notification": {"title": respDesc, "body": decoded_jwt}}
+                }
+            }
+            new_request = Request(request=request._request, data=noti_data)
+            #push noti to specific device
+            push_noti(new_request)
         except (InvalidTokenError, ExpiredSignatureError, DecodeError) as e:
             return Response({'error': 'Invalid or expired token', 'details': str(e)}, status=400)
 
@@ -33,7 +42,7 @@ def payment_callback(request):
             user_id = decoded_jwt.get("userDefined1", None)
             respDesc = decoded_jwt.get("respDesc", None)
             noti_data = {
-                "user_ids": [user_id],  # replace with actual user_ids
+                "interest": ['hello'],  # replace with actual user_ids
                 "publish_body": {
                     "fcm": {"notification": {"title": respDesc, "body": decoded_jwt}}
                 }
