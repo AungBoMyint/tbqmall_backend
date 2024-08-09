@@ -38,7 +38,7 @@ def payment_callback(request):
             noti_data = {
                 "user_ids": [user_id],  # replace with actual user_ids
                 "publish_body": {
-                    "fcm": {"notification": {"title": respDesc, "body": f'{decoded_jwt}'}}
+                    "fcm": {"notification": {"title": respDesc, "body": json.loads(str(decoded_jwt))}}
                 }
             }
             #push noti to specific device
