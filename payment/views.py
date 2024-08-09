@@ -23,7 +23,7 @@ def beams_auth(request,token):
 def push_noti(request):
     decoded_data = request.data
     beams_client.publish_to_users(
-        user_ids=decoded_data.user_ids,
-        publish_body=decoded_data.publish_body
+        user_ids=decoded_data["user_ids"],
+        publish_body=decoded_data["publish_body"]
     )
     return Response("OK")
