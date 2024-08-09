@@ -18,7 +18,7 @@ def payment_callback(request):
     try:
         response_data = request.data
         response_token = response_data['payload']
-        secret_key = 'C170FEDA038E2AF9F801333CF3932462F420F7D996F3601F719A7C1905F8460C'
+        secret_key = 'CD229682D3297390B9F66FF4020B758F4A5E625AF4992E5D75D311D6458B38E2'
         try:
             decoded_jwt = jwt.decode(jwt=response_token, key=secret_key, algorithms=["HS256"])
            
