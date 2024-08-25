@@ -55,10 +55,19 @@ def beams_auth(request,token):
     beams_token = beams_client.generate_token(device_token)
     return Response(beams_token)
 @api_view(['POST'])
-def push_noti(request):
+def push_noti_to_users(request):
     decoded_data = request.data
     beams_client.publish_to_users(
         user_ids=decoded_data["user_ids"],
+        publish_body=decoded_data["publish_body"]
+    )
+    return Response("OK")
+
+@api_view(['POST'])
+def push_noti_to_interests(request):
+    decoded_data = request.data
+    beams_client.publish_to_interests(
+        interests=decoded_data["interests"],
         publish_body=decoded_data["publish_body"]
     )
     return Response("OK")
