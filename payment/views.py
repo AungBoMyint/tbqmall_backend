@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from django.core import serializers
 from pusher_push_notifications import PushNotifications
+import pusher
 import json
 import jwt
 from jwt import InvalidTokenError, ExpiredSignatureError, DecodeError
@@ -11,6 +12,14 @@ from jwt import InvalidTokenError, ExpiredSignatureError, DecodeError
 beams_client = PushNotifications(
     instance_id='708ffce7-2396-48ec-a338-f9cdf935a978',
     secret_key='C170FEDA038E2AF9F801333CF3932462F420F7D996F3601F719A7C1905F8460C',
+)
+
+pusher_client = pusher.Pusher(
+  app_id='1855086',
+  key='0c8bbb12a4debc6b5578',
+  secret='c1f0c9ffd83bdb845402',
+  cluster='ap1',
+  ssl=True
 )
 # Create your views here.
 @api_view(['POST'])
@@ -54,6 +63,17 @@ def beams_auth(request,token):
     device_token = token
     beams_token = beams_client.generate_token(device_token)
     return Response(beams_token)
+
+@api_view(['POST'])
+def pusher_auth(request):
+    params = request.POST
+    auth = pusher_client.authenticate(
+        channel=params.get("channel"),
+        socket_id=params.get("socket_id"),
+        custom_data=params.get("custom_data")
+    )
+    return Response(auth)
+
 @api_view(['POST'])
 def push_noti_to_users(request):
     decoded_data = request.data
