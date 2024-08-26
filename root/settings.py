@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'user',
     'rest_framework',
     'pusher_push_notifications',
+    'pusher',
 ]
 
 MIDDLEWARE = [
